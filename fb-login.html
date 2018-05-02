@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Redirect</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			;!(function() {
+				function getParameterByName(name, url) {
+					var regex = new RegExp("[?&]" + name.replace(/[\[\]]/g, "\\$&") + "(=([^&#]*)|&|#|$)");
+
+					var results = regex.exec(url);
+
+					if (!results) {
+						return null;
+					}
+
+					if (!results[2]) {
+						return "";
+					}
+
+					return decodeURIComponent(results[2].replace(/\+/g, " "));
+				}
+
+				var url = "/?" + window.location.hash.substr(1);
+				var accessToken = getParameterByName("access_token", url);
+				var redirectUrl = getParameterByName("state", url);
+				var fullRedirectUrl = redirectUrl + "?accessToken=" + encodeURIComponent(accessToken) + "&provider=facebook";
+
+				window.location.href = fullRedirectUrl;
+			})();
+		</script>
+	</body>
+</html>
